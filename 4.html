@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<style type="text/css">
+	.wrapper{
+		width: 400px;
+		margin:60px auto;
+		border: 1px solid #ddd;
+		background-color: #fcfcfc;
+		box-shadow: inset 1px 1px 6px rgba(50,50,50,.5);
+		
+
+	}
+	.wrapper h2{ text-align: center; color: #f00;}
+	.wrapper .form-group{ margin-left: 50px;}
+	.wrapper .form-group label{ text-align: left; line-height: 40px;  font-size: 16px; font-weight: 400; color: #666;}
+	.wrapper input{ width: 300px;}
+	.wrapper button{
+		width: 200px;
+		height: 40px;
+		text-align: center;
+		margin-left: 40px;
+		font-size: 18px;
+		background-color:#dad9cd;
+		box-shadow: inset 1px 1px 4px rgba(40,40,20,0.4);
+		color: #f80;
+	}
+
+	</style>
+</head>
+<body ng-app="lele" ng-controller="signUpController">
+	<div class="wrapper">
+		<h2>注册</h2>
+		<form name="signUpForm" ng-submit="signmitForm()">
+			<div class="form-group">
+				<label>用户名:</label><br/>
+				<input 
+				     type="text"
+				     class="form-val"
+				     name="username"
+				     required
+				     ng-model="userdata.username"
+				     ng-minlength="4"
+				     ng-maxlength="32"
+
+
+				>
+				<p class="fa fa-check input_result" 
+				    ng-if="signUpForm.username.$valid
+				"></p>
+				<p  class="error" ng-if='
+				  signUpForm.username.$error.required&&
+				  signUpForm.username.$touched'>
+					用户名不能为空
+				</p>
+				<p class="error" ng-if="(signUpForm.username.$error.minlength||signUpForm.username.$error.maxlength)&&signUpForm.username.$touched">
+					用户名长度应在4-32位之间
+
+				</p>
+			</div>
+			<div class="form-group">
+				<label>密码:</label><br/>
+				<input 
+				     type="password"
+				     class="form-val"
+				     name="password"
+				     ng-model="userdata.password"
+				     ng-minlength="6"
+				     ng-maxlength="28"
+				>
+				<p class="fa fa-check input_result" 
+				    ng-if="signUpForm.password.$valid
+				"></p>
+				<p  class="error" ng-if='
+				  signUpForm.password.$error.required&&
+				  signUpForm.password.$touched'>
+					用户名不能为空
+				</p>
+				<p class="error" ng-if="(signUpForm.password.$error.minlength||signUpForm.password.$error.maxlength)&&signUpForm.password.$touched">
+					用户名长度应在4-32位之间
+
+				</p>
+			</div>
+			<div class="form-group">
+				<label>确认密码:</label><br/>
+				<input 
+				     type="password"
+				     class="form-val"
+				     name="password2"
+				     ng-model="userdata.password2"
+				     compare="userdata.password2"
+				     required
+				/>
+				<p class="fa fa-check input_result" 
+				    ng-if="signUpForm.password2.$valid
+				"></p>
+				<p class="error" ng-if="signUpForm.password2.$error.compare&&signUpForm.password2.$touched">
+					两次密码输入不一致
+
+				</p>
+			</div>
+			<div class="form-group">
+				<button class="btn btnprimary">注册</button>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript">
+	  var m1=angular.module('lele',[]);
+	  m1.controller('signUpController',function($scope){
+	  	 $scope.userdata={}
+	  	 $scope.signmitForm=function(){
+	  	 	// console.log($scope.userdata);
+	  	 	if($scope.signUpForm.$invalid)
+	  	 		alert("请检查您的信息!")
+	  	 	else
+	  	 		alert("注册成功!")
+
+	  	 }
+
+	  })
+	  m1.directive('compare',function(){
+	  	var o={};
+	  	o.strict="AE";
+	  	o.scope={
+	  		orgText:"=compare"
+	  	}
+	  	o.require="ngModel";
+	  	o.link=function(sco,ele,att,con){
+	  		con.$validators.compare=function(v){
+	  			return v=sco.orgText;
+	  		}
+	  		sco.$watch('orgText',function(){
+	  			con.$validate();
+	  		})
+	  	}
+	  	return o;
+	  })
+	</script>
+</body>
+</html>
